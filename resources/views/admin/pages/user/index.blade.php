@@ -68,6 +68,7 @@
                   <table class="table table-hover">
                      <thead>
                         <tr>
+                           <th>Sr. no.</th>
                            <th>Name</th>
                            <th>Email</th>
                            <th>Registration On</th>
@@ -77,8 +78,9 @@
                      </thead>
                      <tbody>
 
-                        @foreach($customers as $customer)
+                        @foreach($customers as $index => $customer)
                             <tr>
+                                <td>{{$index + $customers->firstItem()}}</td>
                                 <td>{{$customer->first_name . ' ' . $customer->last_name }}</td>
                                 <td>{{$customer->email}}</td>
                                 <td>{{$customer->created_at}}</td>

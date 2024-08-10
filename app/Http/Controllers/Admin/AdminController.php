@@ -85,7 +85,7 @@ class AdminController extends Controller{
     }
 
     public function customer(){
-        $customers = User::where('role', 2)->paginate(5);
+        $customers = User::where('role', 2)->orderBy('id','desc')->paginate(50);
         return view('admin.pages.user.index')->with('customers',$customers)->with('activeLink','customer');
     }
 
