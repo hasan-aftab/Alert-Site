@@ -80,6 +80,7 @@
                 <th>PHone</th>
                 <th>Message</th>
                 <th>Contact On</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -92,6 +93,7 @@
                 <td>{{$blog->phone}}</td>
                 <td>{{$blog->message}}</td>
                 <td>{{$blog->created_at}}</td>
+                <td><a onclick="return confirm('Are you sure?')" href="{{url('admin/contact/delete')}}/{{$blog->id}}"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
           @endforeach
             

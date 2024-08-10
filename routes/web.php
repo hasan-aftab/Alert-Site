@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin','middleware' => 'check.auth'], function () {
     Route::get('/order', [AdminController::class, 'order']);
     Route::get('/customer', [AdminController::class, 'customer']);
     Route::get('/customer/delete/{id}', [AdminController::class, 'customer_delete']);
+    Route::get('/contact/delete/{id}', [AdminController::class, 'contact_delete']);
     Route::post('/cancel-subscription/{id}', [AdminController::class, 'cancelSubscription'])->name('cancel.subscription');
 
     //blogs

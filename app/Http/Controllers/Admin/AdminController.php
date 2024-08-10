@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Tracks;
 use App\Models\Setting;
 use App\Models\Payment;
+use App\Models\Contacts;
 use PhpParser\Node\Stmt\If_;
 
 class AdminController extends Controller{
@@ -97,6 +98,11 @@ class AdminController extends Controller{
         
         User::where('id', $id)->delete();
         Tracks::where('user_id', $id)->delete();
-        return redirect('/admin/customer')->with('success');
+        return redirect('/admin/customer')->with('status','Customer deleted successfully');
+    }
+
+    public function contact_delete($id){
+        Contacts::where('id', $id)->delete();
+        return redirect('/admin/contacts')->with('status','Contact deleted successfully.');
     }
 }
