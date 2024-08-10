@@ -27,7 +27,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>{{App\Models\User::count()}}</h3>
+                <h3>{{App\Models\User::where('role', 2)->count()}}</h3>
                 <p>Users</p>
               </div>
               <div class="icon">
