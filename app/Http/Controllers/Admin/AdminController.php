@@ -12,6 +12,7 @@ use App\Models\Contacts;
 use PhpParser\Node\Stmt\If_;
 use Stripe\Stripe;
 use Stripe\Subscription;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller{
 
