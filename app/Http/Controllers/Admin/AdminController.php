@@ -105,7 +105,6 @@ class AdminController extends Controller{
     
         // Retrieve the user's subscription
         $subscription = $user->subscription('default');
-    
         if ($subscription) {
             // Cancel the Stripe subscription
             try {
@@ -118,7 +117,7 @@ class AdminController extends Controller{
         }
     
         // Delete subscription items in your database
-        if ($subscription->count() > 0) {
+        if ($subscription && $subscription->count() > 0) {
             $subscriptionItems = $subscription->items();
             foreach ($subscriptionItems as $item) {
                 $item->delete();
