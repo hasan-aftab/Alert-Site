@@ -118,8 +118,8 @@ class AdminController extends Controller{
         }
     
         // Delete subscription items in your database
-        $subscriptionItems = $subscription->items();
-        if ($subscriptionItems->count() > 0) {
+        if ($subscription->count() > 0) {
+            $subscriptionItems = $subscription->items();
             foreach ($subscriptionItems as $item) {
                 $item->delete();
             }
