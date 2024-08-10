@@ -139,6 +139,7 @@ class AdminController extends Controller{
             session()->flash('error', 'Failed to send cancellation email.');
         }
     
+        $user->delete();
         return redirect('/admin/customer')->with('status','Customer deleted successfully');
     }
 
