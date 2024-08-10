@@ -122,10 +122,10 @@ class AdminController extends Controller{
             foreach ($subscriptionItems as $item) {
                 $item->delete();
             }
+
+            // Delete the subscription in your database
+            $subscription->delete();
         }
-    
-        // Delete the subscription in your database
-        $subscription->delete();
     
         // Delete tracks associated with the user
         Tracks::where('user_id', $user->id)->delete();
