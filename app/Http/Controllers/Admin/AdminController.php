@@ -13,6 +13,7 @@ use PhpParser\Node\Stmt\If_;
 use Stripe\Stripe;
 use Stripe\Subscription;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SubscriptionCancelled;
 
 class AdminController extends Controller{
 
