@@ -91,13 +91,51 @@ class AdminController extends Controller{
     }
 
     public function customer_delete($id){
-        $new = User::find($id);
-        if ($new && $new->subscribed('default')) {
-            $new->subscription('default')->cancelNow();
+        // Set the Stripe API key
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        // Retrieve the authenticated user
+        $user = User::find($id);
+
+        // Update the status of all tracks associated with the user
+        $tracks = Tracks::where('user_id', $user->id)->delete();
+    
+        // Retrieve the user's subscription
+        $subscription = $user->subscription('default');
+    
+        if ($subscription) {
+            // Cancel the Stripe subscription
+            try {
+                $sub = Subscription::retrieve($subscription->stripe_id);
+                $sub->cancel();
+            } catch (\Exception $e) {
+                //session()->flash('error', 'Failed to cancel Stripe subscription.');
+                //return to_route('plans');
+            }
         }
-        
-        User::where('id', $id)->delete();
-        Tracks::where('user_id', $id)->delete();
+    
+        // Delete subscription items in your database
+        $subscriptionItems = $subscription->items();
+        if ($subscriptionItems->count() > 0) {
+            foreach ($subscriptionItems as $item) {
+                $item->delete();
+            }
+        }
+    
+        // Delete the subscription in your database
+        $subscription->delete();
+    
+        // Delete tracks associated with the user
+        Tracks::where('user_id', $user->id)->delete();
+    
+        // Send cancellation email
+        try {
+            Mail::to($user->email)->send(new SubscriptionCancelled());
+        } catch (\Exception $e) {
+            // Log the error or handle the exception as needed
+            session()->flash('error', 'Failed to send cancellation email.');
+        }
+    
         return redirect('/admin/customer')->with('status','Customer deleted successfully');
     }
 
