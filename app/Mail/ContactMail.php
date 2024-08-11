@@ -27,6 +27,7 @@ class ContactMail extends Mailable
                         'text' => $this->contactDetails['message'],
                     ])
                     ->from($address = 'hello@trackrak.com', $name = 'TrackRak Contact Form')
+                    ->replyTo($this->contactDetails['email'], $this->contactDetails['name'])
                     ->subject('TrackRak Contact Form');
     }
 }

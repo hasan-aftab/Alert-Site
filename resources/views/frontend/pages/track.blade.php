@@ -238,7 +238,7 @@
                                             <td style="padding: 12px 15px;">{{$track->discount_type=='Fixed'?'Cash back':'Percentage'}}</td>
                                             <td style="padding: 12px 15px;">{{$track->price}}</td>
                                             <td style="padding: 12px 15px;">{!! $track->alert_email ? $track->alert_email . '<br>' : '' !!} {{$track->alert_text}}</td>
-                                            <td style="padding: 12px 20px;font-size: 20px;"><a title="Edit Track" href="{{route('editalert',$track->id)}}" style="color: inherit;">&#9998;</a> <a href="{{url('track/remove')}}/{{$track->id}}" onclick="return confirm('Are you sure?')" title="Delete Track" style="color: inherit;">&times;</a></td>
+                                            <td style="padding: 12px 20px;font-size: 20px;"><a title="Edit Track" href="{{route('editalert',$track->id)}}" style="text-decoration: none;color: inherit;">&#9998;</a> <a href="{{url('track/remove')}}/{{$track->id}}" onclick="return confirm('Are you sure?')" title="Delete Track" style="text-decoration: none;color: inherit;">&times;</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
