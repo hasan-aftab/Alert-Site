@@ -53,24 +53,25 @@
                             @csrf
 
                             <div class="form-control-input">
-                                <label>Name:</label>
-                                <input type="text" required value="{{ old('name') }}" class="l-operator" placeholder="Enter Name" id="name" name="name" style="height: 1.2rem !important; color: black !important;">
+                                <label>Name: <span style="color: red;">*</span></label>
+                                <input type="text" value="{{ old('name') }}" class="l-operator" placeholder="Enter Name" id="name" name="name" style="height: 1.2rem !important; color: black !important;">
                             </div>
 
                             <div class="form-control-input">
-                                <label>Email:</label>
-                                <input type="text" required value="{{ old('email') }}" class="l-operator" placeholder="Enter Email" id="email" name="email" style="height: 1.2rem !important; color: black !important;">
+                                <label>Email: <span style="color: red;">*</span></label>
+                                <input type="text" value="{{ old('email') }}" class="l-operator" placeholder="Enter Email" id="email" name="email" style="height: 1.2rem !important; color: black !important;">
                             </div>
 
                             <div class="form-control-input">
                                 <label>Phone:</label>
-                                <input type="text" required value="{{ old('phone') }}" class="l-operator" placeholder="Enter Phone" id="phone" name="phone" style="height: 1.2rem !important; color: black !important;">
+                                <input type="text" value="{{ old('phone') }}" class="l-operator" placeholder="Enter Phone" id="phone" name="phone" style="height: 1.2rem !important; color: black !important;">
                             </div>
 
                             <div class="form-control-input">
-                                <label>Message:</label>
+                                <label>Message: <span style="color: red;">*</span></label>
                                 <textarea cols="8" rows="10" class="l-operator" placeholder="Write your message..." id="message" name="message" style="height: 4.2rem !important; color: black !important;">{{ old('message') }}</textarea>
                             </div>
+
 
                             <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
 

@@ -232,7 +232,6 @@ class HomeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:15',
             'message' => 'required|string',
             'g-recaptcha-response' => 'required',
         ]);

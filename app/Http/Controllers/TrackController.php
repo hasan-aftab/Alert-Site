@@ -46,6 +46,10 @@ class TrackController extends Controller
     public function update(Request $request, $id) {
         //echo "<pre>"; print_r($request->all()); die;
         //try {
+            $alert = Tracks::find($id);
+        if(!$alert){
+            return redirect()->route('track')->with('error', 'Alert not found!');
+        }
             
             $customMessages = [
                 'discount_type.required' => 'The amount field is required.',

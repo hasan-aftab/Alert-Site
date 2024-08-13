@@ -21,6 +21,10 @@ class DashboardController extends Controller
 
     public function editalert($id) {
         $alert = Tracks::find($id);
+        if(!$alert){
+            return redirect()->route('track')->with('error', 'Alert not found!');
+        }
+
         $user = Auth::user();
         $all_tracks = $user->tracks()->get();
 
