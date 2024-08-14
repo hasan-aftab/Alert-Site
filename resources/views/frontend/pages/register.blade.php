@@ -78,6 +78,8 @@
 
     </style>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <section class="main-section full-container">
         <div class="container flex l-gap  flex-mobile">
 
@@ -122,14 +124,16 @@
                         <input value="{{ old('email') }}" type="text" placeholder="Enter Email" name="email">
                     </div>
 
-                    <div>
+                    <div style="position: relative;">
                         <label for="psw"><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" name="password">
+                        <input type="password" placeholder="Enter Password" name="password" id="password">
+                        <i class="fa fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 62%; transform: translateY(-50%); cursor: pointer;"></i>
                     </div>
 
-                    <div>
-                        <label for="psw"><b>Confirm Password</b></label>
-                        <input type="password" placeholder="Enter Confirm Password" name="password_confirmation">
+                    <div style="position: relative;">
+                        <label for="psw_confirmation"><b>Confirm Password</b></label>
+                        <input type="password" placeholder="Enter Confirm Password" name="password_confirmation" id="password_confirmation">
+                        <i class="fa fa-eye" id="togglePasswordConfirmation" style="position: absolute; right: 10px; top: 62%; transform: translateY(-50%); cursor: pointer;"></i>
                     </div>
 
                     <div>
@@ -146,4 +150,31 @@
         </div>
     </section>
 
+    <script>
+        // Toggle visibility for Password field
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle visibility for Confirm Password field
+        const togglePasswordConfirmation = document.querySelector('#togglePasswordConfirmation');
+        const passwordConfirmation = document.querySelector('#password_confirmation');
+
+        togglePasswordConfirmation.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = passwordConfirmation.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordConfirmation.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 @endsection

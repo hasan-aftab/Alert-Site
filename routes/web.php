@@ -85,6 +85,7 @@ Route::group(['prefix' => 'admin','middleware' => 'check.auth'], function () {
     Route::post('setting_save', [AdminController::class, 'setting_save'])->name('setting.store');
     Route::get('store', [AdminController::class, 'store']);
     Route::get('contacts', [AdminController::class, 'contacts']);
+    Route::post('/contact/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.contact.bulkDelete');
 });
 
 Route::group(['middleware' => 'check.auth'], function () {

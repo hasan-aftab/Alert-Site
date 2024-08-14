@@ -147,4 +147,15 @@ class AdminController extends Controller{
         Contacts::where('id', $id)->delete();
         return redirect('/admin/contacts')->with('status','Contact deleted successfully.');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+        if ($ids) {
+            Contacts::whereIn('id', $ids)->delete();
+            return redirect()->back()->with('status', 'Selected contacts deleted successfully!');
+        } else {
+            return redirect()->back()->with('status', 'No contacts selected!');
+        }
+    }
 }
