@@ -37,7 +37,7 @@
       width: auto; /* Automatically adjust the width */
       padding: 10px 20px; /* Add padding to make it look better */
       margin-bottom: 20px; /* Add some margin to separate it from the table */
-      float: right;
+      float: ;
   }
 </style>
 <section class="content-header">
