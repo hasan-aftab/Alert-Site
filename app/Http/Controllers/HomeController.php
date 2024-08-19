@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Rules\ReCaptchaV3;
+use App\Models\Tracks;
+use App\Mail\SubscriptionSuccessful;
+use App\Mail\SubscriptionCancelled;
+
 
 class HomeController extends Controller
 {
@@ -205,26 +209,64 @@ class HomeController extends Controller
         return view('frontend.pages.pricing');
     }
 
-    public function plandetails(Request $request, $id = null) {
-        
+    public function plandetails(Request $request, $id = null)
+    {
+        // Retrieve the plan based on the ID
         $plan = \DB::table('plans')->where('id', $id)->first();
         if (!$plan) {
-            return redirect()->back()->with('success', 'No plan found!!!');
+            return redirect()->back()->with('error', 'No plan found.');
         }
 
+        // Define the prices for the plans
         $planPrices = [
             'free' => 0,
             'basic' => 3.99,
             'premium' => 9.99,
         ];
 
+        // Get the price for the selected plan
         $planPrice = $planPrices[$plan->identifier] ?? 0;
 
+        // Get the plan ID
         $planId = $plan->id;
 
-        $userIntent = auth()->user()->createSetupIntent();
+        // Retrieve the authenticated user
+        $user = auth()->user();
 
-        return view('frontend.pages.pricingdetails', compact('planId', 'userIntent', 'planPrice','plan'));
+        // Explicitly create or retrieve the Stripe customer
+        $user->createOrGetStripeCustomer();
+
+        // Check if the plan is free
+        if ($plan->identifier === 'free') {
+            try {
+                // Automatically subscribe the user to the free plan without payment
+                if (!$user->subscribed('default')) {
+                    // Create a free subscription
+                    $user->newSubscription('default', $plan->stripe_id)->create();
+                }
+
+                // Delete all tracks associated with the user
+                Tracks::where('user_id', $user->id)->delete();
+
+                // Send subscription success email
+                Mail::to($user->email)->send(new SubscriptionSuccessful($plan));
+
+                session()->flash('success', 'Subscription successful! You are now signed up. <a href="'.route('track').'">START TRACKING HERE</a>.');
+                return redirect()->route('plans');
+            } catch (IncompletePayment $exception) {
+                // Handle incomplete payment
+                return redirect()->back()->with('error', 'Incomplete payment: ' . $exception->getMessage());
+            } catch (\Exception $e) {
+                // Handle other exceptions
+                return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+            }
+        }
+
+        // If the plan is not free, create a setup intent for the user
+        $userIntent = $user->createSetupIntent();
+
+        // Pass the relevant data to the view
+        return view('frontend.pages.pricingdetails', compact('planId', 'userIntent', 'planPrice', 'plan'));
     }
 
     public function contact(Request $request)

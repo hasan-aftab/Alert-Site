@@ -9,6 +9,7 @@ use App\Models\Tracks;
 use App\Models\Pages;
 use App\Models\Plans;
 use App\Models\User;
+use App\Models\Store;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,29 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function index() {
-        return view('frontend.dashboard.profile');
+        $plans = Plans::get();
+
+        $plansArray = [];
+        foreach ($plans as $plan) {
+            $plansArray[$plan->identifier] = $plan;
+        }
+
+        $currentPlanName = '';
+        $user = auth()->user();
+        $userSubscribed = $user->subscribed();
+        if ($user){
+            $subscription = $user->subscription('default');
+            if ($subscription) {
+                $currentSubscribedPlanPriceId = $subscription->stripe_price;
+
+                $currentPlan = \App\Models\Plans::where('stripe_id', $currentSubscribedPlanPriceId)->first();
+                if($currentPlan){
+                    $currentPlanName = @$currentPlan->identifier;
+                }
+            }
+        }
+
+        return view('frontend.dashboard.profile', compact('currentPlanName'));
     }
 
     public function editalert($id) {
@@ -29,6 +52,48 @@ class DashboardController extends Controller
         $all_tracks = $user->tracks()->get();
 
         return view('frontend.dashboard.editalert')->with('alert', $alert)->with('all_tracks',$all_tracks);
+    }
+
+    public function top_deals(){
+        $plans = Plans::get();
+
+        $plansArray = [];
+        foreach ($plans as $plan) {
+            $plansArray[$plan->identifier] = $plan;
+        }
+
+        $currentPlanName = '';
+        $user = auth()->user();
+        $userSubscribed = $user->subscribed();
+        if ($user){
+            $subscription = $user->subscription('default');
+            if ($subscription) {
+                $currentSubscribedPlanPriceId = $subscription->stripe_price;
+
+                $currentPlan = \App\Models\Plans::where('stripe_id', $currentSubscribedPlanPriceId)->first();
+                if($currentPlan){
+                    $currentPlanName = @$currentPlan->identifier;
+                }
+            }
+        }
+
+        if($currentPlanName!='premium'){
+            return redirect()->route('home'); 
+        }
+
+        $cashback = Store::where('display', 'Fixed')
+            ->where('store_name','!=', '')
+            ->orderBy('amount', 'desc')
+            ->take(20)
+            ->get();
+
+        $percent = Store::where('display', 'Percentage')
+            ->orderBy('amount', 'desc')
+            ->where('store_name','!=', '')
+            ->take(20)
+            ->get();
+
+        return view('frontend.dashboard.top_deals', compact('cashback', 'percent','currentPlanName'));
     }
 
     public function myalerts(){
