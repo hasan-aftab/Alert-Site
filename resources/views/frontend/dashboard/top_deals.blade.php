@@ -84,6 +84,19 @@
             padding: 8px 0;
             font-size: 12px !important;
             text-align: right;
+            position: absolute;
+            right: 0;
+            top: 8px;
+        }
+
+        .cmn-form > .custom-container {
+            position: relative;
+        }
+        @media only screen and (max-width:767px){
+            div#timestamp {
+                position: unset;
+                text-align: left;
+            }
         }
     </style>
 
