@@ -18,6 +18,8 @@
     <meta name="keywords" content="{{@$page->meta_keywords}}">
     <meta name="description" content="{{@$page->meta_description}}">
 
+    @yield('meta')
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="{{ asset('asset/frontend/images/favicon.png') }}" type="image/x-icon">
 

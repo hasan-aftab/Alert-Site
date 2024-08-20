@@ -1,5 +1,10 @@
 @extends('frontend.layout.homepagenew')
 @section('content')
+
+    @section('meta')
+        <meta name="robots" content="noindex">
+    @endsection
+
     <style>
         /* Scoped custom styles */
 		.custom-container {
