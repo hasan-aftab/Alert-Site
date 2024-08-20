@@ -437,7 +437,7 @@
                                 <h1 class="price">$9.99</h1>
                                 <h5 class="monthly">Monthly</h5>
                                 <ul>
-                                    <li class="fw-bold text-center d-block" style="padding-right: 35px">10 Alerts</li>
+                                    <li class="fw-bold text-center d-block" style="padding-right: 35px">Unlimited Alerts</li>
                                 </ul>
                                 @if($user && $userSubscribed && $currentPlanName === 'premium')
                                     <div class="form-control-add" style="margin-left:65px;">

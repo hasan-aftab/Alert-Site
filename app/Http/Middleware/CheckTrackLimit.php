@@ -35,7 +35,7 @@ class CheckTrackLimit
                 $trackLimitByPlan = [
                     'free' => 1,
                     'basic' => 5,
-                    'premium' => 10,
+                    'premium' => 20000,
                 ];
 
                 $currentPlanName = $currentPlan->identifier;
