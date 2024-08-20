@@ -59,6 +59,26 @@
                 width: 330px !important;
             }
         }
+
+        .cmn-form > .custom-container {
+            width: 100%;
+        }
+
+        .top-deal-table {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        div#custom-tab-1, #custom-tab-2 {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+
+        .top-deal-table table.content-table {
+            width: 100%;
+            margin: 0 !important;
+        }
     </style>
 
     <section class="main-section full-container">
