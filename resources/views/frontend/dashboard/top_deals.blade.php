@@ -201,12 +201,14 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             var now = new Date();
-            var options = { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
-            var timeString = now.toLocaleTimeString('en-US', options);
             var dateString = now.toLocaleDateString('en-US');
+
+            // Keep the time constant since the cron job runs at the same time every day
+            var timeString = "05:00 AM EDT";  // Adjust this to your desired time and timezone format
 
             document.getElementById('timestamp').innerHTML = `Updated as of ${timeString} ${dateString}`;
         });
+
     </script>
 
     @includeIf('frontend.layout.hero-section')

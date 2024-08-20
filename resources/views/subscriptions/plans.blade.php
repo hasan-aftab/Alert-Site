@@ -335,7 +335,11 @@
                     </div>
 
                     @if($currentPlanName)
-                        You are currently subscribed to the <b>{{strtoupper($currentPlanName)}}</b> Plan. To switch to another plan, click on the <b>Get Started</b> button. You will be asked for your credit card information again to agree to the new monthly charge.</p>
+                        @if($currentPlanName!='free')
+                            <p>You are currently subscribed to the <b>{{strtoupper($currentPlanName)}}</b> Plan. To switch to another plan, click on the <b>Get Started</b> button. You will be asked for your credit card information again to agree to the new monthly charge.</p>
+                        @else
+                            <p>You are currently subscribed to the FREE Plan. To switch to another plan, click on the Get Started button. You will be asked for your credit card information to agree to the new monthly charge</p>
+                        @endif
                     <br>
                     @endif
 					<div class="plan-row">
