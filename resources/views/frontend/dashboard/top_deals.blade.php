@@ -77,7 +77,7 @@
                         <div id="timestamp" style="font-size: small; font-style: italic;"></div>
 
                         <div id="custom-tab-1" class="custom-tab-content">
-                            <div class="cmn-table">	
+                            <div class="cmn-table top-deal-table">	
                                 <table class="content-table" style="border-collapse: collapse; margin: 26px 29px; font-size: 0.9em; min-width: 400px; border-radius: 5px 5px 0 0; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);">
                                         <thead style="background-color: #95bb3c; color: #000000; text-align: left; font-weight: bold;">
                                             <tr>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div id="custom-tab-2" class="custom-tab-content">
-                            <div class="cmn-table">	
+                            <div class="cmn-table top-deal-table">	
                                 <table class="content-table" style="border-collapse: collapse; margin: 26px 29px; font-size: 0.9em; min-width: 400px; border-radius: 5px 5px 0 0; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);">
                                         <thead style="background-color: #95bb3c; color: #000000; text-align: left; font-weight: bold;">
                                             <tr>

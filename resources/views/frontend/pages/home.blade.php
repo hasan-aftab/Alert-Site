@@ -1,6 +1,12 @@
 @extends('frontend.layout.homepagenew')
 
 @section('content')
+    <style>
+        .page-title{
+            margin-bottom: 14px;
+        }
+    </style>
+
     <section class="main-section full-container">
         <div class="container flex l-gap flex-mobile lr-m">
             @includeIf('frontend.layout.sidebar')
