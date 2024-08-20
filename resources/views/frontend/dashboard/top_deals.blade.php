@@ -71,8 +71,10 @@
                     <div class="custom-container">
                         <ul class="custom-tabs">
                             <li class="custom-tab-link custom-current" data-tab="custom-tab-1">Percent</li>
-                            <li class="custom-tab-link" data-tab="custom-tab-2">CashBack</li>
+                            <li class="custom-tab-link" data-tab="custom-tab-2">Cash Back</li>
                         </ul>
+
+                        <div id="timestamp" style="font-size: small; font-style: italic;"></div>
 
                         <div id="custom-tab-1" class="custom-tab-content">
                             <div class="cmn-table">	
@@ -82,7 +84,7 @@
                                                 <th style="padding: 12px 15px;">#</th>
                                                 <th style="padding: 12px 15px;">Store Name</th>
                                                 <th style="padding: 12px 15px;">Percent</th>
-                                                <th style="padding: 12px 15px;">View Store</th>
+                                                <th style="padding: 12px 15px;">Shop</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -91,7 +93,7 @@
                                                     <td style="padding: 12px 15px;">{{$key+1}}</td>
                                                     <td style="padding: 12px 15px;">{{$track->store_name}}</td>
                                                     <td style="padding: 12px 15px;">{{$track->amount}}</td>
-                                                    <td style="padding: 12px 20px;font-size: 20px;"><a title="View Deal" target="_blank" href="{{$track->shopping_url}}" style="text-decoration: none;color: inherit;">&#128065;</a></td>
+                                                    <td style="padding: 12px 20px;font-size: 20px;"><a title="View Deal" target="_blank" href="{{$track->shopping_url}}" style="text-decoration: none;color: inherit;">&#128722;</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -105,8 +107,8 @@
                                             <tr>
                                                 <th style="padding: 12px 15px;">#</th>
                                                 <th style="padding: 12px 15px;">Store Name</th>
-                                                <th style="padding: 12px 15px;">Cashback</th>
-                                                <th style="padding: 12px 15px;">View Store</th>
+                                                <th style="padding: 12px 15px;">Cash back</th>
+                                                <th style="padding: 12px 15px;">Shop</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,7 +117,7 @@
                                                     <td style="padding: 12px 15px;">{{$key+1}}</td>
                                                     <td style="padding: 12px 15px;">{{$track->store_name}}</td>
                                                     <td style="padding: 12px 15px;">{{$track->amount}}</td>
-                                                    <td style="padding: 12px 20px;font-size: 20px;"><a title="View Deal" target="_blank" href="{{$track->shopping_url}}" style="text-decoration: none;color: inherit;">&#128065;</a></td>
+                                                    <td style="padding: 12px 20px;font-size: 20px;"><a title="View Deal" target="_blank" href="{{$track->shopping_url}}" style="text-decoration: none;color: inherit;">&#128722;</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -137,10 +139,17 @@
                 tab.addEventListener('click', function() {
                     var tabId = this.getAttribute('data-tab');
 
-                    tabs.forEach(function(t) { t.classList.remove('custom-current'); });
-                    contents.forEach(function(c) { c.classList.remove('custom-current'); });
+                    tabs.forEach(function(t) {
+                        t.classList.remove('custom-current');
+                        t.style.border = '1px solid gray'; // Add gray border when class is removed
+                    });
+
+                    contents.forEach(function(c) {
+                        c.classList.remove('custom-current');
+                    });
 
                     this.classList.add('custom-current');
+                    this.style.border = 'none'; // Remove border when class is added
                     document.getElementById(tabId).classList.add('custom-current');
                 });
             });
@@ -151,6 +160,14 @@
             }
         });
 
+        document.addEventListener('DOMContentLoaded', function() {
+            var now = new Date();
+            var options = { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+            var timeString = now.toLocaleTimeString('en-US', options);
+            var dateString = now.toLocaleDateString('en-US');
+
+            document.getElementById('timestamp').innerHTML = `Updated as of ${timeString} ${dateString}`;
+        });
     </script>
 
     @includeIf('frontend.layout.hero-section')
