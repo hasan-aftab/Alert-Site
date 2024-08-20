@@ -79,6 +79,12 @@
             width: 100%;
             margin: 0 !important;
         }
+
+        div#timestamp {
+            padding: 8px 0;
+            font-size: 12px !important;
+            text-align: right;
+        }
     </style>
 
     <section class="main-section full-container">
