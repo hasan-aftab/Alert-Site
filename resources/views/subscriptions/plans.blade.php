@@ -365,6 +365,7 @@
                                 <h5 class="monthly">Monthly</h5>
                                 <ul>
                                     <li class="fw-bold text-center d-block" style="padding-right: 35px">1 Alert</li>
+                                    <li class="fw-bold text-center d-block" style="padding-right: 35px">&nbsp;</li>
                                 </ul>
                                 @if($user && $userSubscribed && $currentPlanName === 'free')
                                     <div class="form-control-add" style="margin-left:65px;">
@@ -398,6 +399,7 @@
                                 <h5 class="monthly">Monthly</h5>
                                 <ul>
                                     <li class="fw-bold text-center d-block" style="padding-right: 35px">5 Alerts</li>
+                                    <li class="fw-bold text-center d-block" style="padding-right: 35px">&nbsp;</li>
                                 </ul>
                                 @if($user && $userSubscribed && $currentPlanName === 'basic')
                                     <div class="form-control-add" style="margin-left:65px;">
@@ -438,6 +440,7 @@
                                 <h5 class="monthly">Monthly</h5>
                                 <ul>
                                     <li class="fw-bold text-center d-block" style="padding-right: 35px">Unlimited Alerts</li>
+                                    <li class="fw-bold text-center d-block" style="padding-right: 35px">Top 20 Deals</li>
                                 </ul>
                                 @if($user && $userSubscribed && $currentPlanName === 'premium')
                                     <div class="form-control-add" style="margin-left:65px;">
