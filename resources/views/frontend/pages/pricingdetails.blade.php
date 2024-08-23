@@ -818,13 +818,17 @@
                             if (data.discount_type === 'fixed_amount') {
                                 // If the discount is a fixed amount
                                 discountedPrice = originalPrice - (parseFloat(data.discount) / 100); // Adjusted price after discount
+                                document.getElementById('checkout-submit-btn').innerText = `Pay $${discountedPrice.toFixed(2)}/month`;
                             } else {
                                 // If the discount is a percentage
                                 discountedPrice = originalPrice * (1 - (parseFloat(data.discount) / 100)); // Adjusted price after discount
+
+                                if(data.discount==100){
+                                    document.getElementById('checkout-submit-btn').innerText = `Pay $${discountedPrice.toFixed(2)}/month`;
+                                }else{
+                                    document.getElementById('checkout-submit-btn').innerText = `Pay $${discountedPrice.toFixed(2) - 0.01}/month`;
+                                }
                             }
-
-                            document.getElementById('checkout-submit-btn').innerText = `Pay $${discountedPrice.toFixed(2) - 0.01}/month`;
-
 
                         } else {
                             // No discount applied, display original price
