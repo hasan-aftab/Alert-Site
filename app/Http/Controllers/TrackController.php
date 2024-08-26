@@ -477,7 +477,7 @@ class TrackController extends Controller
         $url = "https://api.engager.ecbsn.com/datagrid/rest/v1/data";
         $name = "button_domain_batch_v1";
 
-        for ($i = 0; $i < 40; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $data = \DB::table('stores')->offset($i * 100)->limit(100)->pluck('store_id')->toArray();
             $variables = json_encode(["storeIds" => $data]);
 
