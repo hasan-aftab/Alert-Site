@@ -68,6 +68,23 @@
             cursor: not-allowed; /* Change cursor style */
         }
 
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group .form-control {
+            flex: 1;
+        }
+
+        .input-group .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
         @media screen and (max-width: 300px) {
             span.psw {
                 display: block;
@@ -80,20 +97,15 @@
         }
     </style>
 
-<section class="main-section full-container">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <section class="main-section full-container">
         <div class="container flex l-gap flex-mobile lr-m">
             @includeIf('frontend.layout.sidebar')
             <div class="page-content pg-l">
                 <h1 class="page-title">Reset Password</h1>
-                <style>
-                    .error{
-                        color: red;
-                    }
-                </style>
-
+                
                 <div class="page-content">
-                <div>
-
                     @if(session('success'))
                         <div id="success-message" style="background-color: #d4edda; color: #155724; border-color: #c3e6cb; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem;">
                             {{ session('success') }}
@@ -101,57 +113,90 @@
                     @endif
 
                     <form method="POST" action="{{ route('password.update') }}">
-                    @csrf
+                        @csrf
 
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul class="">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <input type="hidden" name="token" value="{{ $token }}">
+
+                        <div class="row mb-3">
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" autocomplete="email" autofocus>
+                            </div>
                         </div>
-                    @endif
 
-                    <input type="hidden" name="token" value="{{ $token }}">
+                        <div class="row mb-3">
+                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
-                    <div class="row mb-3">
-                        <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" autocomplete="email" autofocus>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                    <i class="fa fa-eye toggle-password" id="togglePassword"></i>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
+                        <div class="row mb-3">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
 
-                    <div class="row mb-3">
-                        <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                    <i class="fa fa-eye toggle-password" id="togglePasswordConfirmation"></i>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                        
+                        <br>
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Reset Password') }}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <br>
-                    <div class="row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Reset Password') }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                 </div>
-            </div>
             </div>
         </div>
     </section>
+
+    <script>
+        // Toggle visibility for Password field
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle visibility for Confirm Password field
+        const togglePasswordConfirmation = document.querySelector('#togglePasswordConfirmation');
+        const passwordConfirmation = document.querySelector('#password-confirm');
+
+        togglePasswordConfirmation.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = passwordConfirmation.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordConfirmation.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+
 @endsection

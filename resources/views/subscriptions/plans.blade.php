@@ -470,7 +470,8 @@
         //    return false;
         //}
 
-        var confirmationMessage = "Are you sure you want to unsubscribe from the " + planName + " plan? All of your alerts will be deleted.";
+        var confirmationMessage = "Are you sure you want to unsubscribe from the " + planName + " plan? All of your alerts will be deleted and you will not be refunded for the reminder of your month. We suggest canceling right before renewal.";
+        
         if (confirm(confirmationMessage)) {
             window.location.href = "{{ route('subscription-cancel') }}";
         } else {
