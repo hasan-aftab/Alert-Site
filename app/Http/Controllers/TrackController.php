@@ -472,13 +472,22 @@ class TrackController extends Controller
         }
     }
 
-    public function getstorewithname() {
-
+    public function getstorewithname()
+    {
         $url = "https://api.engager.ecbsn.com/datagrid/rest/v1/data";
         $name = "button_domain_batch_v1";
 
-        for ($i = 0; $i < 200; $i++) {
-            $data = \DB::table('stores')->offset($i * 100)->limit(100)->pluck('store_id')->toArray();
+        // Get the total number of records in the 'stores' table
+        $totalRecords = \DB::table('stores')->count();
+
+        // Calculate the total number of iterations needed
+        $batchSize = 100;
+        $totalIterations = ceil($totalRecords / $batchSize);
+        //echo $totalIterations; die;
+
+        for ($i = 0; $i < $totalIterations; $i++) {
+            // Fetch a batch of store IDs
+            $data = \DB::table('stores')->offset($i * $batchSize)->limit($batchSize)->pluck('store_id')->toArray();
             $variables = json_encode(["storeIds" => $data]);
 
             $queryParams = http_build_query([
@@ -500,20 +509,24 @@ class TrackController extends Controller
             $response = curl_exec($ch);
 
             if (curl_errno($ch)) {
-                //echo 'Error: ' . curl_error($ch);
+                // Handle the error
             } else {
-                //echo $response;
+                $data = json_decode($response, true);
+
+                // Update the store information in the database
+                foreach ($data['data']['stores'] as $row) {
+                    \DB::table('stores')->where('store_id', $row['storeId'])->update([
+                        'store_name' => $row['storeName'],
+                        'site_url' => $row['siteUrl'],
+                        'shopping_url' => $row['shoppingURL']
+                    ]);
+                }
             }
 
             curl_close($ch);
-            $data = json_decode($response, true);
-            //echo "<pre>"; print_r($data); die;
-
-            foreach ($data['data']['stores'] as $row) {
-                \DB::table('stores')->where('store_id', $row['storeId'])->update(['store_name' => $row['storeName'], 'site_url' => $row['siteUrl'], 'shopping_url' => $row['shoppingURL']]);
-            }
         }
     }
+
     public function check_store(Request $request, $store){
         $curl = curl_init();
         $id = $request->id;

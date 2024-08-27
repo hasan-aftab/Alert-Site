@@ -109,5 +109,68 @@ class PaymentController extends Controller
             // If coupon is not valid, return error response
             return response()->json(['valid' => false, 'message' => $e->getMessage()]);
         }
-    }    
+    }
+    
+    public function check_coupon_old(Request $request)
+    {
+        try {
+            // Set the Stripe API key
+            \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+            // Retrieve the coupon from Stripe
+            // Retrieve the coupon from Stripe, expanding the applies_to field
+            $coupon = \Stripe\Coupon::retrieve([
+                'id' => $request->coupon,
+                'expand' => ['applies_to']
+            ]);
+
+            // Validate the plan associated with the coupon
+            $plan = Plans::find($request->plan);
+            //echo "<pre>"; print_r($plan); die;
+
+            // Check if the coupon is valid and applies to the specified product
+            if ($coupon->valid) {
+                $appliesToProducts = $coupon->applies_to['products'] ?? [];
+                //echo "<pre>"; print_r($appliesToProducts); die;
+
+                if (!empty($appliesToProducts) && !in_array($plan->stripe_id, $appliesToProducts)) {
+                    // Return an error message if the coupon does not apply to the selected product
+                    return response()->json(['valid' => false, 'message' => 'This coupon does not apply to the selected product.']);
+                }
+
+                // Determine the discount amount and type
+                $discountAmount = null;
+                $discountType = null;
+
+                if (!empty($coupon->amount_off)) {
+                    // Coupon provides a fixed amount discount
+                    $discountAmount = $coupon->amount_off;
+                    $discountType = 'fixed_amount';
+                } elseif (!empty($coupon->percent_off)) {
+                    // Coupon provides a percentage discount
+                    $discountAmount = $coupon->percent_off;
+                    $discountType = 'percentage';
+                } else {
+                    // Invalid coupon with no discount amount specified
+                    return response()->json(['valid' => false, 'message' => 'Invalid coupon: No discount amount specified.']);
+                }
+
+                // Build the response data
+                $responseData = [
+                    'valid' => true,
+                    'discount' => $discountAmount,
+                    'discount_type' => $discountType,
+                    'message' => 'Coupon is valid.'
+                ];
+
+                return response()->json($responseData);
+            } else {
+                // Return an error message if the coupon is not valid
+                return response()->json(['valid' => false, 'message' => 'Coupon is not valid.']);
+            }
+        } catch (\Exception $e) {
+            // If coupon is not valid, return error response
+            return response()->json(['valid' => false, 'message' => $e->getMessage()]);
+        }
+    }
 }
