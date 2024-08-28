@@ -61,7 +61,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function check_coupon(Request $request){
+    public function check_coupon_old(Request $request){
         try {
             // Perform coupon validation logic here
             // For example, using Stripe
@@ -111,7 +111,7 @@ class PaymentController extends Controller
         }
     }
     
-    public function check_coupon_old(Request $request)
+    public function check_coupon(Request $request)
     {
         try {
             // Set the Stripe API key
@@ -133,7 +133,7 @@ class PaymentController extends Controller
                 $appliesToProducts = $coupon->applies_to['products'] ?? [];
                 //echo "<pre>"; print_r($appliesToProducts); die;
 
-                if (!empty($appliesToProducts) && !in_array($plan->stripe_id, $appliesToProducts)) {
+                if (!empty($appliesToProducts) && !in_array($plan->product_id, $appliesToProducts)) {
                     // Return an error message if the coupon does not apply to the selected product
                     return response()->json(['valid' => false, 'message' => 'This coupon does not apply to the selected product.']);
                 }
