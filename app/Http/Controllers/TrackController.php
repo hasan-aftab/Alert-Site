@@ -280,15 +280,17 @@ class TrackController extends Controller
 
         foreach (array_chunk($smsData, 50) as $batch) {
             foreach ($batch as $data) {
-                SendSMSJob::dispatch(
-                    $data['name'],
-                    $data['phone_number'],
-                    $data['storeName'],
-                    $data['discountType'],
-                    $data['amount'],
-                    $data['shoppingUrl'],
-                    $data['operator']
-                );
+                if ($data['storeName'] == "Macy's") {
+                    SendSMSJob::dispatch(
+                        $data['name'],
+                        $data['phone_number'],
+                        $data['storeName'],
+                        $data['discountType'],
+                        $data['amount'],
+                        $data['shoppingUrl'],
+                        $data['operator']
+                    );
+                }
             }
         }
 
@@ -425,15 +427,17 @@ class TrackController extends Controller
 
         foreach (array_chunk($emailData, 50) as $batch) {
             foreach ($batch as $data) {
-                SendEmailJob::dispatch(
-                    $data['email'],
-                    $data['name'],
-                    $data['storeName'],
-                    $data['discountType'],
-                    $data['amount'],
-                    $data['shoppingUrl'],
-                    $data['operator']
-                );
+                if ($data['storeName'] == "Macy's") {
+                    SendEmailJob::dispatch(
+                        $data['email'],
+                        $data['name'],
+                        $data['storeName'],
+                        $data['discountType'],
+                        $data['amount'],
+                        $data['shoppingUrl'],
+                        $data['operator']
+                    );
+                }
             }
         }
 
