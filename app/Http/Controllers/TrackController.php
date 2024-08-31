@@ -250,7 +250,7 @@ class TrackController extends Controller
         foreach ($usersWithSpecificTracks2 as $user) {
             foreach ($user->tracks as $track) {
                 $store = $track->store;
-                if ($store && $store->amount!=$track->last_amount_sms) {
+                if ($store && $store->amount==$track->last_amount_sms) {
                     
                     \DB::table('tracks')->where('id',$track->id)->update(['last_amount_sms'=>$store->amount]);
                     //\DB::table('tracks')->where('id',$track->id)->update(['last_amount_email'=>$store->amount]);
@@ -394,7 +394,7 @@ class TrackController extends Controller
                 
                 $store = $track->store;
 
-                if ($store && $store->amount!=$track->last_amount_email) {
+                if ($store && $store->amount==$track->last_amount_email) {
                     
                     \DB::table('tracks')->where('id',$track->id)->update(['last_amount_email'=>$store->amount]);
                     //\DB::table('tracks')->where('id',$track->id)->update(['last_amount_sms'=>$store->amount]);
@@ -421,7 +421,7 @@ class TrackController extends Controller
             }
         }
 
-        //echo "<pre>"; print_r($emailData); die;
+        echo "<pre>"; print_r($emailData); die;
 
         foreach (array_chunk($emailData, 50) as $batch) {
             foreach ($batch as $data) {
