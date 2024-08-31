@@ -459,6 +459,9 @@ class TrackController extends Controller
         $response = curl_exec($curl);
         curl_close($curl);
         $data = json_decode($response, true);
+        
+        \DB::table('stores')->delete();
+
         //echo count($data['data']['stores']);
         //echo $response;
 
@@ -467,7 +470,7 @@ class TrackController extends Controller
 
             $price = $row['reward']['amount'];
             if($row['id']==8333 && $price==3.0){
-                $price = 15;
+                $price = 20;
             }
 
             if ($count) {
