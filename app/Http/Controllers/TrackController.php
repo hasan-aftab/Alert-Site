@@ -276,6 +276,10 @@ class TrackController extends Controller
             }
         }
 
+        $smsData = array_filter($smsData, function($entry) {
+            return !empty($entry['storeName']);
+        });
+
         $smsData = array_map('unserialize', array_unique(array_map('serialize', $smsData)));
         //echo "<pre>"; print_r($smsData); die;
 
@@ -422,8 +426,12 @@ class TrackController extends Controller
             }
         }
 
+        $emailData = array_filter($emailData, function($entry) {
+            return !empty($entry['storeName']);
+        });
+
         $emailData = array_map('unserialize', array_unique(array_map('serialize', $emailData)));
-        //echo "<pre>"; print_r($emailData); die;
+        echo "<pre>"; print_r($emailData); die;
 
         foreach (array_chunk($emailData, 50) as $batch) {
             foreach ($batch as $data) {
