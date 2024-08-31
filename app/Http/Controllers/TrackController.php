@@ -276,8 +276,8 @@ class TrackController extends Controller
             }
         }
 
-        $emailData = array_map('unserialize', array_unique(array_map('serialize', $emailData)));
-        echo "<pre>"; print_r($emailData); die;
+        $smsData = array_map('unserialize', array_unique(array_map('serialize', $smsData)));
+        echo "<pre>"; print_r($smsData); die;
 
         foreach (array_chunk($smsData, 50) as $batch) {
             foreach ($batch as $data) {
