@@ -464,10 +464,16 @@ class TrackController extends Controller
 
         foreach ($data['data']['stores'] as $row) {
             $count = \DB::table('stores')->where('store_id', $row['id'])->count();
+
+            $price = $row['reward']['amount'];
+            if($row['id']==8333 && $price==3.0){
+                $price = 15;
+            }
+
             if ($count) {
-                \DB::table('stores')->where('store_id', $row['id'])->update(['amount' => $row['reward']['amount'], 'display' => $row['reward']['display']]);
+                \DB::table('stores')->where('store_id', $row['id'])->update(['amount' => $price, 'display' => $row['reward']['display']]);
             } else {
-                \DB::table('stores')->insert(['store_id' => $row['id'], 'amount' => $row['reward']['amount'], 'display' => $row['reward']['display']]);
+                \DB::table('stores')->insert(['store_id' => $row['id'], 'amount' => $price, 'display' => $row['reward']['display']]);
             }
         }
     }
