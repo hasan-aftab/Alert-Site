@@ -480,11 +480,7 @@ class TrackController extends Controller
         foreach ($data['data']['stores'] as $row) {
             $apiStoreIds[] = $row['id'];
             $count = \DB::table('stores')->where('store_id', $row['id'])->count();
-    
             $price = $row['reward']['amount'];
-            if ($row['id'] == 8333 && $price == 3.0) {
-                $price = 20;
-            }
     
             if ($count) {
                 \DB::table('stores')->where('store_id', $row['id'])->update([
