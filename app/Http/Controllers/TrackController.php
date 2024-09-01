@@ -465,31 +465,44 @@ class TrackController extends Controller
                 'Cookie: AWSALB=BQuQp35zF6Z4088PbnOs0/uN+fhXh+64uiTH7TcdcYEV1IeGuTekWe6BwxSwigER03VWiuPmmUyIygS6j/vYJ48KgaB8X6aUgsfg/oBnr3tJlsXuk1GpGvQSLANK; AWSALBCORS=BQuQp35zF6Z4088PbnOs0/uN+fhXh+64uiTH7TcdcYEV1IeGuTekWe6BwxSwigER03VWiuPmmUyIygS6j/vYJ48KgaB8X6aUgsfg/oBnr3tJlsXuk1GpGvQSLANK'
             ),
         ));
-
+    
         $response = curl_exec($curl);
         curl_close($curl);
         $data = json_decode($response, true);
-        
-        \DB::table('stores')->delete();
-
-        //echo count($data['data']['stores']);
-        //echo $response;
-
+    
+        if (!isset($data['data']['stores'])) {
+            // Handle error or exit if the stores data is not available
+            return;
+        }
+    
+        // Collect all store IDs from the API response
+        $apiStoreIds = [];
         foreach ($data['data']['stores'] as $row) {
+            $apiStoreIds[] = $row['id'];
             $count = \DB::table('stores')->where('store_id', $row['id'])->count();
-
+    
             $price = $row['reward']['amount'];
-            if($row['id']==8333 && $price==3.0){
+            if ($row['id'] == 8333 && $price == 3.0) {
                 $price = 20;
             }
-
+    
             if ($count) {
-                \DB::table('stores')->where('store_id', $row['id'])->update(['amount' => $price, 'display' => $row['reward']['display']]);
+                \DB::table('stores')->where('store_id', $row['id'])->update([
+                    'amount' => $price, 
+                    'display' => $row['reward']['display']
+                ]);
             } else {
-                \DB::table('stores')->insert(['store_id' => $row['id'], 'amount' => $price, 'display' => $row['reward']['display']]);
+                \DB::table('stores')->insert([
+                    'store_id' => $row['id'], 
+                    'amount' => $price, 
+                    'display' => $row['reward']['display']
+                ]);
             }
         }
-    }
+    
+        // Remove stores from the database that are not present in the API response
+        \DB::table('stores')->whereNotIn('store_id', $apiStoreIds)->delete();
+    }    
 
     public function getstorewithname()
     {
